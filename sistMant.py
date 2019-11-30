@@ -4,7 +4,7 @@ import sqlite3
 from prettytable import PrettyTable
 
 def Welcome(t):
-
+    # Limpiamos el shell(bash)
     os.system("clear")
     time.sleep(t)
 
@@ -33,7 +33,7 @@ def Menu():
     while True:
 
         leer = int(input("Ingrese opcion = "))
-
+        # Solamente se permite el rango de 1 - 7
         if leer > 0 and leer < 8 :
             os.system("clear")
             break;
@@ -41,27 +41,57 @@ def Menu():
 
     NumberOpt(leer)
 
+def Upload(t):
+
+    print("[INFO] Cargando ...")
+
+    time.sleep(t)
+
+    c.execute("CREATE TABLE IF NOT EXISTS Alumnos(codigo_AI varchar(8) PRIMARY KEY NOT NULL, Apellidos varchar(8), Nombres varchar(18), Edad int);")
+
+    conn.commit()
+    print("[INFO] Ejecutando la tabla Alumnos")
+
+    time.sleep(t)
+    c.execute("CREATE TABLE IF NOT EXISTS Cursos (Codigo_c varchar(8) PRIMARY KEY NOT NULL, Descripcion varchar(18), Creditos int);")
+
+    conn.commit()
+    print("[INFO] Ejecutando la tabla Cursos")
+
+    time.sleep(t)
+    c.execute("CREATE TABLE IF NOT EXISTS Alumnos_Notas(codigo_AI varchar(8), Codigo_c varchar(8), pc1 int, pc2 int, pc3 int, FOREIGN KEY(codigo_AI) REFERENCES Alumnos(codigo_AI), FOREIGN KEY(Codigo_c) REFERENCES Cursos(Codigo_c));")
+
+    conn.commit()
+    print("[INFO] Ejecutando la tabla Alumnos_Notas")
+
+    time.sleep(t)
+    print("[INFO] Finalizo el upload :)")
+
+    time.sleep(t)
+
 def IngresarAlumno():
     
-    print("Ingrese los datos del Alumno\n")
-
+    print("\nIngrese los datos del Alumno\n")
+    # Input devuelve un tipo de variable str
     cod = input("Código : ")
     ape = input("Apellidos : ")
     nom = input("Nombres : ")
     eda = int(input("Edad : "))
 
+    # insertamos desde python la sintaxis INSERT en sql
     c.execute("INSERT INTO Alumnos VALUES ('{}','{}','{}','{}')"
             .format(cod,ape,nom,eda))
     
 
     print("\n")
-
+    # Guarda la tarea anterior ejecutada
     conn.commit()
     Menu()
 
 def Reporte():
-    print("Reporte de la base de datos Alumnos\n")
+    print("\nReporte de la base de datos Alumnos\n")
 
+    # Es un formato de visualización de tablas
     x = PrettyTable()
     x.field_names = ["Código", "Apellidos", "Nombres", "Edad"]
 
@@ -72,24 +102,28 @@ def Reporte():
     Menu()
 
 def Buscar():
-    print("Ingrese el código del Alumno para proceder a BUSCAR\n")
+    print("\nIngrese el código del Alumno para proceder a BUSCAR\n")
 
     x = PrettyTable()
-    x.field_names = ['Cód-AL', 'Apellidos', 'Nombres', 'Edad', 'Cód-Curso', 'pc1', 'pc2', 'pc3']
+    x.field_names = ['Cod-AL', 'Apellidos', 'Nombres', 'Edad', 'Cod-Curso', 'pc1', 'pc2', 'pc3']
 
-    cod = input("Código : ")
+    cod = input("Codigo : ")
 
     c.execute("SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas WHERE codigo_AI='{}'".format(cod))
-
-    x.add_row(c.fetchall()[0])
+    # fetchall nos permite obtener toda las coincidencia posible
+    # hacemos un mapeo a cada una de los datos para formar un tipo de lista
+    data = list(map(str,c.fetchall()[0]))
+    x.add_row(data)
 
     print(x)
     Menu()
 
 def Eliminar():
-    print("Ingrese el código del Alumno para proceder a ELIMINAR\n")
+    print("\nIngrese el código del Alumno para proceder a ELIMINAR\n")
 
     cod = input("Código : ")
+
+    # Para eliminar un dato debemos ELIMINAR de las dos tablas que se usan para el mismo estudiante
     c.execute("DELETE FROM Alumnos WHERE codigo_AI='{}'"
             .format(cod))
 
@@ -102,11 +136,11 @@ def Eliminar():
     Menu()
 
 def Modificar():
-    print("Escriba donde se desea modificar, de lo contrario dejelo vacio\n")
+    print("\nEscriba donde se desea modificar, de lo contrario dejelo vacio\n")
 
     cod = input("Código : ")
     c.execute("SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas WHERE codigo_AI='{}'".format(cod))
-
+    # Es similiar al método fetchall, la diferencia que solamente accedera al dato que tenga el mismo código
     alumno = c.fetchone()
 
     codiAL = alumno[0]
@@ -120,10 +154,12 @@ def Modificar():
 
     modify = [codiAL,ape,nom,edad,codiCu,pc1,pc2,pc3]
 
+    # Mapea nuevamente los datos modificados
     for num,param in enumerate(modify):
         if param == "":
             modify[num] = alumno[num]
 
+    # Actualizando la base de datos
     c.execute("UPDATE Alumnos SET Apellidos='{0}', Nombres='{1}', Edad='{2}' WHERE codigo_AI='{3}'".format(modify[1],modify[2],modify[3],cod))
     conn.commit()
 
@@ -137,7 +173,7 @@ def Ordenar():
     cod = input("Código : ")
 
     x = PrettyTable()
-    x.field_names = ['Cód-AL', 'Apellidos', 'Nombres', 'Edad', 'Cód-Curso', 'pc1', 'pc2', 'pc3']
+    x.field_names = ['Cod-AL', 'Apellidos', 'Nombres', 'Edad', 'Cod-Curso', 'pc1', 'pc2', 'pc3']
 
     for rows in c.execute("SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas ORDER BY codigo_AI ASC, Apellidos ASC"):
         x.add_row(rows)
@@ -153,7 +189,7 @@ def Salir():
     return 0
 
 def NumberOpt(arg):
-
+    # Lista de número con sus respectivas funciones
     switcher = {
             1 : IngresarAlumno,
             2 : Reporte,
@@ -168,11 +204,11 @@ def NumberOpt(arg):
     func()
 
 if __name__=="__main__":
-
+    # Cargamos la base de datos 
     conn = sqlite3.connect('mantenimiento.db')
     c = conn.cursor()
-
-    Welcome(0)
+    Upload(1)
+    Welcome(1)
     Menu()
 
 
