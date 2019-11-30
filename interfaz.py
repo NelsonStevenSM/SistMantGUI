@@ -12,21 +12,27 @@ class SampleApp(tk.Tk):
         self.geometry("350x450")
         self.title("VALIDACIÓN DE USUARIO")
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-
+        
+        # Creando un contenedor que nos permitirá insertar widget
         container = tk.Frame(
                 self, 
                 bg="#ADD8E6")
 
+        # Le asignamos configuraciones
         container.pack(side="top", fill="both", expand=True)
+
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
+
+        # El bucle estará interactuando cuando se inicie sesión con las opciones
         for F in (Ingresar, Salir):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
 
+            # sticky refencia la posición absoluta del widget con el padre
             frame.grid(row=0, column=0, sticky="nsew", padx=20)
 
         self.show_frame("Ingresar")
@@ -43,6 +49,7 @@ class Ingresar(tk.Frame):
         self.parent = parent
         self.config(bg="#ADD8E6")
         self.controller = controller
+
         self.contra = BaseDato.Contra()
 
         self.grid_rowconfigure(0, weight=1)
@@ -55,7 +62,7 @@ class Ingresar(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        imagen = Image.open("./Tkinter/UNI.png")
+        imagen = Image.open("./UNI.png")
         imagen = imagen.resize((250,90), Image.ANTIALIAS)
         img = ImageTk.PhotoImage(imagen)
         
@@ -65,7 +72,7 @@ class Ingresar(tk.Frame):
                 bg="#ADD8E6")
         
         label.image = img
-        label.grid(row=0, column=0,columnspan=2)
+        label.grid(row=0, column=0, columnspan=2)
 
         self.small_font = ('Verdana',15)
 
@@ -88,7 +95,6 @@ class Ingresar(tk.Frame):
 
         edit_user.grid(row=1, column=1)
 
-
         lbl_pass = tk.Label(
                 self, 
                 text="CONTRASEÑA: ",
@@ -107,24 +113,26 @@ class Ingresar(tk.Frame):
 
         self.edit_user.grid(row=2, column=1)
 
-
-        #btn_user = tk.Button(self, text="Ingresar",
-         #       command=lambda: controller.show_frame("Salir"))
-        btn_user = tk.Button(self, text="Ingresar",command=lambda : self.compare())
+        btn_user = tk.Button(
+                self, 
+                text="Ingresar",
+                command=lambda : self.compare())
 
         btn_user.grid(row=3, column=0)
-        btn_pass = tk.Button(self, text="Salir", command= self.close_it)
+
+        btn_pass = tk.Button(
+                self, 
+                text="Salir", 
+                command= self.close_it)
+
         btn_pass.grid(row=3, column=1)
 
         self.entry_text.trace("w", lambda *args: self.character_limit())
         self.entry_text_pass.trace("w", lambda *args: self.character_limit())
 
-
-
     def character_limit(self):
         if len(self.entry_text.get()) > 0:
             self.entry_text.set(self.entry_text.get()[:9])
-    
 
     def character_limit_pass(self):
         if len(self.entry_text_pass.get()) > 0:
@@ -185,6 +193,7 @@ class PageOne(tk.Frame):
                 self.id, 
                 text="Go", 
                 command=self.close_it)
+
         button.pack()
 
 class Salir(tk.Frame):
@@ -248,7 +257,6 @@ class Salir(tk.Frame):
                 width=10,fg="black",
                 command=lambda : self.getScript()).pack(side="top",pady=5)
 
-        
         button = tk.Button(
                 self, 
                 text="Cerrar Sesion",
@@ -257,6 +265,7 @@ class Salir(tk.Frame):
         button.pack()
 
     def getScript(self):
+
         if self.v.get() == 1:
             Alumnos(self)
 
