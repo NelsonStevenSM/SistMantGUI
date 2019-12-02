@@ -202,6 +202,8 @@ class Salir(tk.Frame):
 
         self.config(bg="#ADD8E6")
 
+        self.small_font = ('Verdana',15)
+
         label = tk.Label(
                 self, 
                 text="MENU DE OPCIONES", 
@@ -221,8 +223,9 @@ class Salir(tk.Frame):
                 value=1,
                 justify="center", 
                 width=10,
-                fg="black", 
-                command= lambda: self.getScript()).pack(side="top",pady=5)
+                fg="blue",
+                font=self.small_font,
+                command= lambda: self.getScript()).pack(side="top",pady=10)
         
         self.Cursos = tk.Radiobutton(
                 self,
@@ -232,8 +235,9 @@ class Salir(tk.Frame):
                 value=2, 
                 justify="center", 
                 width=10,
-                fg="black", 
-                command= lambda: self.getScript()).pack(side="top",pady=5)
+                fg="blue", 
+                font=self.small_font,
+                command= lambda: self.getScript()).pack(side="top",pady=10)
 
         self.Notas = tk.Radiobutton(
                 self, 
@@ -243,15 +247,16 @@ class Salir(tk.Frame):
                 value=3,
                 justify="center", 
                 width=10,
-                fg="black",
-                command=lambda : self.getScript()).pack(side="top",pady=5)
+                fg="blue",
+                font=self.small_font,
+                command=lambda : self.getScript()).pack(side="top",pady=10)
 
 
         button = tk.Button(
                 self, 
                 text="Cerrar Sesion",
                 bg="orange",
-                command=lambda: controller.show_frame("Ingresar"))
+                command=lambda: controller.show_frame("Ingresar"), pady=20)
         button.pack()
 
     def getScript(self):
@@ -387,7 +392,9 @@ class SQLite():
 
     def Notas(self):
         nota = []
-        for rows in self.c.execute("SELECT * FROM Alumnos_Notas"):
+        for rows in self.c.execute("SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas WHERE codigo_AI LIKE '_________' ORDER BY codigo_AI ASC"):
+            prom = round((rows[-3:][0] + rows[-3:][1] + rows[-3:][2]) / 3 , 2 )
+            rows = list(rows) + [prom]
             nota.append(rows)
     
         return nota
