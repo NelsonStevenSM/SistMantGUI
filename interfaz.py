@@ -247,15 +247,6 @@ class Salir(tk.Frame):
                 fg="black",
                 command=lambda : self.getScript()).pack(side="top",pady=5)
 
-        self.Prom = tk.Radiobutton(
-                self, 
-                text="Promedio", 
-                indicatoron=0, 
-                variable=self.v, 
-                value=4,
-                justify="center",
-                width=10,fg="black",
-                command=lambda : self.getScript()).pack(side="top",pady=5)
 
         button = tk.Button(
                 self, 
@@ -275,8 +266,6 @@ class Salir(tk.Frame):
         elif self.v.get() == 3:
             Notas(self)
 
-        else:
-            Promedio(self)
 
 class Alumnos(tk.Frame):
 
@@ -383,29 +372,6 @@ class Notas(tk.Frame):
                 cell.grid(row=r, column=c)
 
 
-class Promedio(tk.Frame):
-
-    def __init__(self, parent):
-        tk.Frame.__init__(self, parent)
-
-        self.parent = parent
-        self.open_another()
-
-    def close_it(self):
-        self.id.destroy()
-
-    def open_another(self):
-        self.id = tk.Toplevel(self.parent)
-
-        label = tk.Label(
-                self.id,
-                text="MENU DE OPCIONES")
-
-        label.pack(side="top", fill="x", pady=10)
-
-        ##Alternativa mi maquina no aparece X
-        button = tk.Button(self.id, text="Go", command=self.close_it)
-        button.pack()
 
 class SQLite():
     def __init__(self):
@@ -415,28 +381,28 @@ class SQLite():
 
     def Reporte(self):
         rep = []
-        for rows in self.c. execute("SELECT * FROM Alumnos"):
+        for rows in self.c.execute("SELECT * FROM Alumnos"):
             rep.append(rows)
              
         return rep
 
     def Notas(self):
         nota = []
-        for rows in self.c. execute("SELECT * FROM Alumnos_Notas"):
+        for rows in self.c.execute("SELECT * FROM Alumnos_Notas"):
             nota.append(rows)
     
         return nota
 
     def Cursos(self):
         curso = []
-        for rows in self.c. execute("SELECT * FROM Cursos"):
+        for rows in self.c.execute("SELECT * FROM Cursos"):
             curso.append(rows)
 
         return curso
 
     def Contra(self):
         contra = []
-        for rows in self.c. execute("SELECT codigo_AI FROM Alumnos"):
+        for rows in self.c.execute("SELECT codigo_AI FROM Alumnos"):
             contra.append(rows[0])
 
         return contra
