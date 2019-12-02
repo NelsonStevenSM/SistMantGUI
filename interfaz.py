@@ -1,6 +1,5 @@
 import tkinter as tk               
 from tkinter import font  as tkfont 
-from functools import partial
 from PIL import ImageTk, Image
 import sqlite3
 
