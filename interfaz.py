@@ -385,14 +385,19 @@ class SQLite():
         self.c = conn.cursor()
 
     def Reporte(self):
-        rep = []
+        rep = [["Código", "Apellidos", "Nombres", "Edad"]]
+
         for rows in self.c.execute("SELECT * FROM Alumnos"):
             rep.append(rows)
              
         return rep
 
     def Notas(self):
-        nota = []
+#        nota = []
+
+        nota = [["Cod-AL", "Apellidos", "Nombres", "Edad", "Cod-Curso", "pc1", "pc2", "pc3", "Promedior"]]
+
+
         for rows in self.c.execute("SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas WHERE codigo_AI LIKE '_________' ORDER BY codigo_AI ASC"):
             prom = round((rows[-3:][0] + rows[-3:][1] + rows[-3:][2]) / 3 , 2 )
             rows = list(rows) + [prom]
@@ -401,7 +406,7 @@ class SQLite():
         return nota
 
     def Cursos(self):
-        curso = []
+        curso = [["Cod-Curso", "Descripción", "Creditos"]]
         for rows in self.c.execute("SELECT * FROM Cursos"):
             curso.append(rows)
 
