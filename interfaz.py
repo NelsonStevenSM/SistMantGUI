@@ -36,6 +36,7 @@ class SampleApp(tk.Tk):
 
         self.show_frame("Ingresar")
 
+    # Interacción entre ventanas
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
