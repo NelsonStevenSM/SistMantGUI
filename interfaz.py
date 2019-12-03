@@ -1,20 +1,20 @@
-import tkinter as tk               
-from tkinter import font  as tkfont 
+import tkinter as tk
+from tkinter import font as tkfont
 from PIL import ImageTk, Image
 import sqlite3
 
-class SampleApp(tk.Tk):
 
+class SampleApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         super(SampleApp, self).__init__()
 
         self.geometry("350x450")
         self.title("VALIDACIÓN DE USUARIO")
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-        
+        self.title_font = tkfont.Font(
+                family='Helvetica', size=18, weight="bold", slant="italic")
         # Creando un contenedor que nos permitirá insertar widget
         container = tk.Frame(
-                self, 
+                self,
                 bg="#ADD8E6")
 
         # Le asignamos configuraciones
@@ -25,7 +25,7 @@ class SampleApp(tk.Tk):
 
         self.frames = {}
 
-        # El bucle estará interactuando cuando se inicie sesión con las opciones
+        # El bucle estará interactuando cuando se inicie sesión con las opci
         for F in (Ingresar, Salir):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
@@ -63,50 +63,49 @@ class Ingresar(tk.Frame):
         self.grid_columnconfigure(1, weight=1)
 
         imagen = Image.open("./UNI.png")
-        imagen = imagen.resize((250,90), Image.ANTIALIAS)
+        imagen = imagen.resize((250, 90), Image.ANTIALIAS)
         img = ImageTk.PhotoImage(imagen)
-        
         label = tk.Label(
-                self, 
-                image = img, 
+                self,
+                image=img,
                 bg="#ADD8E6")
-        
         label.image = img
         label.grid(row=0, column=0, columnspan=2)
 
-        self.small_font = ('Verdana',15)
+        self.small_font = ('Verdana', 15)
 
         lbl_user = tk.Label(
                 self,
                 text="USUARIO: ",
-                font=self.small_font, 
+                font=self.small_font,
                 bg="#ADD8E6",
                 fg="black")
 
         lbl_user.grid(row=1, column=0, pady=20)
 
-        self.entry_text = tk.StringVar() 
-        self.entry_text_pass = tk.StringVar() 
+        self.entry_text = tk.StringVar()
+        self.entry_text_pass = tk.StringVar()
 
-        edit_user = tk.Entry(self, 
-                width=10, 
-                textvariable=self.entry_text, 
+        edit_user = tk.Entry(
+                self,
+                width=10,
+                textvariable=self.entry_text,
                 font=self.small_font)
 
         edit_user.grid(row=1, column=1)
 
         lbl_pass = tk.Label(
-                self, 
+                self,
                 text="CONTRASEÑA: ",
-                font=self.small_font, 
-                bg="#ADD8E6", 
+                font=self.small_font,
+                bg="#ADD8E6",
                 fg="black")
 
         lbl_pass.grid(row=2, column=0, pady=20)
 
         self.edit_user = tk.Entry(
                 self,
-                width=10, 
+                width=10,
                 textvariable=self.entry_text_pass,
                 font=self.small_font,
                 show="*")
@@ -114,16 +113,16 @@ class Ingresar(tk.Frame):
         self.edit_user.grid(row=2, column=1)
 
         btn_user = tk.Button(
-                self, 
+                self,
                 text="Ingresar",
-                command=lambda : self.compare())
+                command=lambda: self.compare())
 
         btn_user.grid(row=3, column=0)
 
         btn_pass = tk.Button(
-                self, 
-                text="Salir", 
-                command= self.close_it)
+                self,
+                text="Salir",
+                command=self.close_it)
 
         btn_pass.grid(row=3, column=1)
 
@@ -140,18 +139,23 @@ class Ingresar(tk.Frame):
 
     def compare(self):
 
-        if any([x == self.entry_text.get() 
-            for x in self.contra]) and any(x==self.entry_text_pass.get()
-                    for x in self.contra):
+        if any([x == self.entry_text.get() for x in self.contra]) and any(
+                x == self.entry_text_pass.get() for x in self.contra):
 
             self.lbl_msm = tk.Label(
-                    self, 
+                    self,
                     text="",
-                    bg="#ADD8E6", 
-                    width=10, 
+                    bg="#ADD8E6",
+                    width=10,
                     font=self.small_font)
 
-            self.lbl_msm.grid(row=4, column=0, columnspan=2, padx=50,sticky="s")
+            self.lbl_msm.grid(
+                    row=4,
+                    column=0,
+                    columnspan=2,
+                    padx=50,
+                    sticky="s")
+
             self.controller.show_frame("Salir")
 
         else:
@@ -162,12 +166,17 @@ class Ingresar(tk.Frame):
                     bg="#ADD8E6",
                     fg="red")
 
-            self.lbl_msm.grid(row=4, column=0, columnspan=2, pady=10,sticky="s")
-
+            self.lbl_msm.grid(
+                    row=4,
+                    column=0,
+                    columnspan=2,
+                    pady=10,
+                    sticky="s")
 
     def close_it(self):
         self.quit()
         self.destroy()
+
 
 class PageOne(tk.Frame):
 
@@ -184,17 +193,18 @@ class PageOne(tk.Frame):
         self.id = tk.Toplevel(self.parent)
 
         label = tk.Label(
-                self.id, 
+                self.id,
                 text="MENU DE OPCIONES")
 
         label.pack(side="top", fill="x", pady=10)
 
         button = tk.Button(
-                self.id, 
-                text="Go", 
+                self.id,
+                text="Go",
                 command=self.close_it)
 
         button.pack()
+
 
 class Salir(tk.Frame):
 
@@ -203,58 +213,56 @@ class Salir(tk.Frame):
 
         self.config(bg="#ADD8E6")
 
-        self.small_font = ('Verdana',15)
+        self.small_font = ('Verdana', 15)
 
         label = tk.Label(
-                self, 
-                text="MENU DE OPCIONES", 
+                self,
+                text="MENU DE OPCIONES",
                 font=controller.title_font,
-                bg="#ADD8E6", 
+                bg="#ADD8E6",
                 fg="black")
 
         label.pack(side="top", fill="both", pady=30)
 
         self.v = tk.IntVar()
-  
         self.Alumno = tk.Radiobutton(
-                self, 
-                text="Alumnos", 
-                indicatoron=0, 
-                variable=self.v, 
+                self,
+                text="Alumnos",
+                indicatoron=0,
+                variable=self.v,
                 value=1,
-                justify="center", 
+                justify="center",
                 width=10,
                 fg="blue",
                 font=self.small_font,
-                command= lambda: self.getScript()).pack(side="top",pady=10)
-        
+                command=lambda: self.getScript()).pack(side="top", pady=10)
+
         self.Cursos = tk.Radiobutton(
                 self,
-                text="Cursos", 
-                indicatoron=0, 
-                variable=self.v, 
-                value=2, 
-                justify="center", 
-                width=10,
-                fg="blue", 
-                font=self.small_font,
-                command= lambda: self.getScript()).pack(side="top",pady=10)
-
-        self.Notas = tk.Radiobutton(
-                self, 
-                text="Notas", 
-                indicatoron=0, 
-                variable=self.v, 
-                value=3,
-                justify="center", 
+                text="Cursos",
+                indicatoron=0,
+                variable=self.v,
+                value=2,
+                justify="center",
                 width=10,
                 fg="blue",
                 font=self.small_font,
-                command=lambda : self.getScript()).pack(side="top",pady=10)
+                command=lambda: self.getScript()).pack(side="top", pady=10)
 
+        self.Notas = tk.Radiobutton(
+                self,
+                text="Notas",
+                indicatoron=0,
+                variable=self.v,
+                value=3,
+                justify="center",
+                width=10,
+                fg="blue",
+                font=self.small_font,
+                command=lambda: self.getScript()).pack(side="top", pady=10)
 
         button = tk.Button(
-                self, 
+                self,
                 text="Cerrar Sesion",
                 bg="orange",
                 command=lambda: controller.show_frame("Ingresar"), pady=20)
@@ -279,7 +287,6 @@ class Alumnos(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
 
-
         self.parent = parent
         self.open_another()
 
@@ -291,23 +298,24 @@ class Alumnos(tk.Frame):
 
         alumn = BaseDato.Reporte()
 
-        for r in range(0,len(alumn)):
+        for r in range(0, len(alumn)):
             for c in range(0, len(alumn[0])):
                 var = tk.StringVar()
 
                 var.set(alumn[r][c])
 
                 cell = tk.Label(
-                        self.id, 
-                        width=15, 
-                        justify="center", 
-                        bg="#ADD8E6", 
+                        self.id,
+                        width=15,
+                        justify="center",
+                        bg="#ADD8E6",
                         fg="black",
                         textvariable=var,
-                        borderwidth=2, 
+                        borderwidth=2,
                         relief="groove")
 
                 cell.grid(row=r, column=c)
+
 
 class Cursos(tk.Frame):
 
@@ -323,25 +331,25 @@ class Cursos(tk.Frame):
 
     def open_another(self):
         self.id = tk.Toplevel(self.parent)
-        
         alumn_not = BaseDato.Cursos()
-        for r in range(0,len(alumn_not)):
+        for r in range(0, len(alumn_not)):
             for c in range(0, len(alumn_not[0])):
 
                 var = tk.StringVar()
                 var.set(alumn_not[r][c])
 
                 cell = tk.Label(
-                        self.id, 
-                        width=15, 
-                        justify="center", 
-                        bg="#ADD8E6", 
+                        self.id,
+                        width=15,
+                        justify="center",
+                        bg="#ADD8E6",
                         fg="black",
                         textvariable=var,
-                        borderwidth=2, 
+                        borderwidth=2,
                         relief="groove")
 
                 cell.grid(row=r, column=c)
+
 
 class Notas(tk.Frame):
 
@@ -359,23 +367,22 @@ class Notas(tk.Frame):
 
         alumn_not = BaseDato.Notas()
 
-        for r in range(0,len(alumn_not)):
+        for r in range(0, len(alumn_not)):
             for c in range(0, len(alumn_not[0])):
                 var = tk.StringVar()
                 var.set(alumn_not[r][c])
 
                 cell = tk.Label(
-                        self.id, 
-                        width=15, 
-                        justify="center", 
-                        bg="#ADD8E6", 
+                        self.id,
+                        width=15,
+                        justify="center",
+                        bg="#ADD8E6",
                         fg="black",
                         textvariable=var,
-                        borderwidth=2, 
+                        borderwidth=2,
                         relief="groove")
 
                 cell.grid(row=r, column=c)
-
 
 
 class SQLite():
@@ -389,20 +396,27 @@ class SQLite():
 
         for rows in self.c.execute("SELECT * FROM Alumnos"):
             rep.append(rows)
-             
         return rep
 
     def Notas(self):
-#        nota = []
+        nota = [[
+            "Cod-AL",
+            "Apellidos",
+            "Nombres",
+            "Edad",
+            "Cod-Curso",
+            "pc1",
+            "pc2",
+            "pc3",
+            "Promedior"]]
 
-        nota = [["Cod-AL", "Apellidos", "Nombres", "Edad", "Cod-Curso", "pc1", "pc2", "pc3", "Promedior"]]
+        for rows in self.c.execute(
+                "SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas WHERE\
+                        codigo_AI LIKE '_________' ORDER BY codigo_AI ASC"):
 
-
-        for rows in self.c.execute("SELECT * FROM Alumnos NATURAL JOIN Alumnos_Notas WHERE codigo_AI LIKE '_________' ORDER BY codigo_AI ASC"):
-            prom = round((rows[-3:][0] + rows[-3:][1] + rows[-3:][2]) / 3 , 2 )
+            prom = round((rows[-3:][0] + rows[-3:][1] + rows[-3:][2]) / 3, 2)
             rows = list(rows) + [prom]
             nota.append(rows)
-    
         return nota
 
     def Cursos(self):
@@ -418,6 +432,7 @@ class SQLite():
             contra.append(rows[0])
 
         return contra
+
 
 if __name__ == "__main__":
     BaseDato = SQLite()
