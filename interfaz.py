@@ -9,6 +9,7 @@ class SampleApp(tk.Tk):
         super(SampleApp, self).__init__()
 
         self.geometry("350x450")
+        self.resizable(0, 0)
         self.title("VALIDACIÓN DE USUARIO")
         self.title_font = tkfont.Font(
                 family='Helvetica', size=18, weight="bold", slant="italic")
