@@ -114,9 +114,19 @@ def IngresarAlumno():
 
 def Verificar(name):
     verif = -1
+#    verif = input("{} : ".format(name))
+
+#   if verif == "":
+#      verif = -1
+# else:
+    #    verif = int(verif)
 
     while not (verif >= 0 and verif <= 20):
-        verif = int(input("{} : ".format(name)))
+        verif = input("{} : ".format(name))
+        if verif == "":
+            return verif
+        else:
+            verif = int(verif)
 
     return verif
 
@@ -185,6 +195,7 @@ def Modificar():
             codigo_AI='{}'".format(cod))
     # Es similiar al método fetchall, la diferencia que solamente accedera al
     # dato que tenga el mismo código
+    conn.commit()
     alumno = c.fetchone()
 
     codiAL = alumno[0]
@@ -204,17 +215,18 @@ def Modificar():
             modify[num] = alumno[num]
 
     # Actualizando la base de datos
-    c.execute("\
-            UPDATE Alumnos\
+    print(modify)
+
+    c.execute("UPDATE Alumnos\
             SET Apellidos='{0}', Nombres='{1}', Edad='{2}'\
-            WHERE codigo_AI='{3}\
-            '".format(modify[1], modify[2], modify[3], cod))
+            WHERE codigo_AI='{3}'\
+            ".format(modify[1], modify[2], int(modify[3]), modify[0]))
     conn.commit()
 
     c.execute("UPDATE Alumnos_Notas\
             SET pc1='{0}', pc2='{1}', pc3='{2}'\
-            WHERE codigo_AI='{3}\
-            '".format(modify[5], modify[6], modify[7], cod))
+            WHERE codigo_AI='{3}'\
+            ".format(int(modify[5]), int(modify[6]), int(modify[7]), modify[0]))
     conn.commit()
 
     Menu()
