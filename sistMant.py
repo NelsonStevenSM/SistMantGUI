@@ -114,12 +114,6 @@ def IngresarAlumno():
 
 def Verificar(name):
     verif = -1
-#    verif = input("{} : ".format(name))
-
-#   if verif == "":
-#      verif = -1
-# else:
-    #    verif = int(verif)
 
     while not (verif >= 0 and verif <= 20):
         verif = input("{} : ".format(name))
@@ -215,7 +209,6 @@ def Modificar():
             modify[num] = alumno[num]
 
     # Actualizando la base de datos
-    print(modify)
 
     c.execute("UPDATE Alumnos\
             SET Apellidos='{0}', Nombres='{1}', Edad='{2}'\
