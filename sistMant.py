@@ -88,16 +88,17 @@ def Upload(t):
 def IngresarAlumno():
     print("\nIngrese los datos del Alumno\n")
     # Input devuelve un tipo de variable str
-    cod = input("Código Alumno : ")
+    cod = str(ValidarCod("Código"))
+#    cod = input("Código Alumno : ")
     ape = input("Apellidos : ")
     nom = input("Nombres : ")
     eda = int(input("Edad : "))
 
     cod_c = input("Código Curso : ")
 
-    pc1 = Verificar("PC1")
-    pc2 = Verificar("PC2")
-    pc3 = Verificar("PC3")
+    pc1 = VerificarNota("PC1")
+    pc2 = VerificarNota("PC2")
+    pc3 = VerificarNota("PC3")
 
     # insertamos desde python la sintaxis INSERT en sql
     c.execute("INSERT INTO Alumnos \
@@ -112,7 +113,7 @@ def IngresarAlumno():
     Menu()
 
 
-def Verificar(name):
+def VerificarNota(name):
     verif = -1
 
     while not (verif >= 0 and verif <= 20):
@@ -121,6 +122,16 @@ def Verificar(name):
             return verif
         else:
             verif = int(verif)
+
+    return verif
+
+
+def ValidarCod(name):
+
+    verif = input("{} :".format(name))
+
+    while not (len(verif[0:8]) == 8 and (verif[8] >= 'A' and verif[8] <= 'K')):
+        verif = input("{} : ".format(name))
 
     return verif
 
@@ -197,9 +208,9 @@ def Modificar():
     nom = str(input("Nombre ({}) : ".format(alumno[2])))
     edad = str(input("Edad ({}) : ".format(alumno[3])))
     codiCu = alumno[4]
-    pc1 = str(Verificar("PC1 ({})".format(alumno[5])))
-    pc2 = str(Verificar("PC2 ({})".format(alumno[6])))
-    pc3 = str(Verificar("PC3 ({})".format(alumno[7])))
+    pc1 = str(VerificarNota("PC1 ({})".format(alumno[5])))
+    pc2 = str(VerificarNota("PC2 ({})".format(alumno[6])))
+    pc3 = str(VerificarNota("PC3 ({})".format(alumno[7])))
 
     modify = [codiAL, ape, nom, edad, codiCu, pc1, pc2, pc3]
 
